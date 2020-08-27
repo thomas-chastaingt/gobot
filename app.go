@@ -1,35 +1,35 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
-	"os"
+	"net/url"
 
 	"github.com/gorilla/mux"
 )
 
-func HomeEndpoint(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(w, "hello")
-}
-
-func VerificationEndpoint(w http.ResponseWriter, r *http.Request) {
-	challenge := r.URL.Query().Get("hub.challenge")
-	token := r.URL.Query().Get("hub.verifiy_token")
-
-	if token == os.Getenv("VERIFY_TOKEN") {
-		w.WriteHeader(200)
-		w.Write([]byte(challenge))
-	} else {
-		w.WriteHeader(404)
-		w.Write([]byte("Error, wrong validation token"))
+func HandleMessenger(resp http.ResponseWriter, request *http.Request) {
+	secretKey := "secret_token"
+	if request.Method == "GET" {
+		u, _ := url.Parse(request.RequestURI)
+		values, _ := url.ParseQuery(u.RawQuery)
+		token := values.Get("hub.verify_token")
+		if token == secretKey {
+			resp.WriteHeader(200)
+			resp.Write([]byte(values.Get("hub.challenge")))
+			return
+		}
+		resp.WriteHeader(400)
+		resp.Write([]byte(`Bad token`))
+		return
 	}
 }
 
+// Initialize request
 func main() {
-	r := mux.NewRouter()
-	r.HandleFunc("/", HomeEndpoint)
-	if err := http.ListenAndServe(":8080", r); err != nil {
-		log.Fatal(err)
-	}
+	router := mux.NewRouter()
+	router.HandleFunc("/", HandleMessenger).Methods("POST", "GET")
+	port := ":8000"
+	log.Printf("Server started on %s", port)
+	log.Fatal(http.ListenAndServe(port, router))
 }
