@@ -5,8 +5,8 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/emedvedev/enigma"
 	"github.com/mkideal/cli"
+	enigma "github.com/thomas-chastaingt/Enigmatic"
 )
 
 // Validate runs checks on all available Enigma parameters.

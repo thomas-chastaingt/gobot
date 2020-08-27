@@ -6,8 +6,8 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/emedvedev/enigma"
 	"github.com/mkideal/cli"
+	enigma "github.com/thomas-chastaingt/Enigmatic"
 )
 
 // CLIOpts sets the parameter format for Enigma CLI. It also includes a "help"

@@ -30,4 +30,5 @@ const OutputTemplate = `
   Plugboard: {{ or (.Args.Plugboard) ("empty") }}
   Reflector: {{ .Args.Reflector }}
 {{ (.Ctx.Color).Bold "Result:" }}
-  {{ .Encoded }}`
+  {{ .Encoded }}
+`
