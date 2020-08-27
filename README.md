@@ -1,2 +1,1 @@
-# gobot
-🤖 A slack messenger bot with Golang
+📺 Enigma is a simulator of the enigma machine
